@@ -80,23 +80,27 @@ elif mode[0] == 'open_live_sport':
         source = eval(site+".main()")
         categories  = source.categories()
         for cat in categories:
-            addon.add_item({'mode': 'open_sport_cat', 'url': cat[0], 'site': info.mode}, {'title': cat[1]}, img=icon_path(cat[2]), fanart=fanart,is_folder=True)
+            addon.add_item({'mode': 'open_sport_cat', 'url': cat[0], 'site': info.mode, 'title': cat[1]}, {'title': cat[1]}, img=icon_path(cat[2]), fanart=fanart,is_folder=True)
 
     addon.end_of_directory()
 
 elif mode[0]=='open_sport_cat':
     url = args['url'][0]
+    title = args['title'][0].split()[0]
+    log("Mon url : %s"%(url))
+    log("Mon titre : %s"%(title))
     site = args['site'][0]
     exec "from resources.lib.sources.live_sport import %s"%site
     info = eval(site+".info()")
     source = eval(site+".main()")
-    events = source.events(url)
+    events = source.events(title)
     for event in events:
         if not info.multilink:
             browser = 'plugin://plugin.program.chrome.launcher/?url=%s&mode=showSite&stopPlayback=no'%(event[0])
             context = [('Open in browser','RunPlugin(%s)'%browser)]
             addon.add_video_item({'mode': 'play_special_sport', 'url': event[0],'title':event[1], 'img': icon_path(info.icon),'site':site}, {'title': event[1]}, img=icon_path(info.icon), fanart=fanart, contextmenu_items=context)
         else:
+            log("Mes events : %s %s"%(event[0],event[1]))
             addon.add_item({'mode': 'get_sport_event', 'url': event[0],'site':site , 'title':event[1], 'img': icon_path(info.icon)}, {'title': event[1]}, img=icon_path(info.icon), fanart=fanart,is_folder=True)
     if (info.paginated and source.next_page()):
         addon.add_item({'mode': 'open_cat', 'site': info.mode, 'url': source.next_page()}, {'title': 'Next Page >>'}, img=icon_path(info.icon), fanart=fanart,is_folder=True)

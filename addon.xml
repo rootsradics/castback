@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<addon id="plugin.video.castback" name="castback" version="0.2.8" provider-name="castback">
+<addon id="plugin.video.castback" name="Castback" version="0.2.8" provider-name="Castback">
 	<requires>
 		<import addon="xbmc.python" version="2.1.0"/>
 		<import addon="script.module.beautifulsoup" version="3.2.1"/>
@@ -15,8 +15,8 @@
 		<provides>video</provides>
 	</extension>
 	<extension point="xbmc.addon.metadata">
-		<summary lang="en">Castaway is back. So ... Castback !</summary>
-		<description lang="en">Visit TVADDONS.ag for support.
+		<summary lang="en">Castback.. because of Laetitia Castback...</summary>
+		<description lang="en">Visit someone for support.
 		</description>
 		<disclaimer lang="en">The author does not host or distribute any of the content displayed by this addon. The author does not have any affiliation with the content provider.</disclaimer>
 		

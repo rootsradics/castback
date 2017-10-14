@@ -1,8 +1,9 @@
 from resources.lib.modules import client,webutils,control
-import re,sys
+import re,sys,os
 from resources.lib.modules.log_utils import log
 import json
 import urllib
+from datetime import datetime, timedelta
 
 class info():
 	def __init__(self):
@@ -16,10 +17,35 @@ class info():
 		
 class main():
 	def __init__(self):
-		self.base = control.setting('livetv_base')
-		url = "http://bit.do/livetvsx"
+		self.streamerFilter = []
+		self.getStreamerFilter()
+		self.json=""
+		if os.path.isfile(control.jsonFile):
+			dt=datetime.fromtimestamp(os.path.getmtime(control.jsonFile))
+			if datetime.now()<dt+timedelta(minutes=int(control.setting("delay"))):
+				with open(control.jsonFile, "r") as f:
+					self.json=f.read()
+					
+		if self.json=="":
+			self.downloadJson()
+			with open(control.jsonFile, "w") as f:
+				f.write(self.json)
+				
+		self.data = json.loads(self.json)
+		
+	def getStreamerFilter(self):
+		lst=["streamer_acestream", "streamer_sopcast", "streamer_youtube", "streamer_aliez", "streamer_web"]
+		for s in lst:
+			if control.setting(s)=="true":
+				name=s.split("_")[-1]
+				self.streamerFilter.append(name)
+		
+		
+	
+	def downloadJson(self):
+		url = control.setting('livetvsx_json_url')
 		response = urllib.urlopen(url)
-		self.data = json.loads(response.read())
+		self.json=response.read()
 
 	def categories(self):
 		cats = self.__prepare_cats()
@@ -81,8 +107,7 @@ class main():
 			if len(res)>0:
 				match=res[0]
 				break
-		# links=[l for l in match["links"] if l["url"].strip()!="" and (l["streamer"]=="acestream" or l["streamer"]=="sopcast" or l["streamer"]=="youtube")]
-		links=[l for l in match["links"] if l["url"].strip()!=""]
+		links=[l for l in match["links"] if l["url"].strip()!="" and l["streamer"] in self.streamerFilter]
 		return(links)
 		
 	def getDesiredMatches(self, sportUrl):

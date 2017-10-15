@@ -106,6 +106,8 @@ metacacheFile = os.path.join(dataPath, 'meta.db')
 
 cacheFile = os.path.join(dataPath, 'cache.db')
 
+jsonFile = os.path.join(dataPath, 'livetvsx.json')
+
 
 def addonIcon():
     appearance = setting('appearance').lower()

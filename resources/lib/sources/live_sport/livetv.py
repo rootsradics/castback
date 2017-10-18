@@ -25,17 +25,22 @@ class main():
 	def getJson(self):
 		if os.path.isfile(control.jsonFile):
 			with open(control.jsonFile, "r") as f:
-					self.json=f.read()
-			self.data = json.loads(self.json)
-			log(self.data["datetime"])
-			dt=datetime.strptime(self.data["datetime"], "%Y-%m-%d %H:%M:%S.%f")
-		
-		if self.json=="" or datetime.now()<dt+timedelta(minutes=int(control.setting("delay"))):
+				self.json=f.read()
+		if self.json=="" :
 			self.downloadJson()
 			with open(control.jsonFile, "w") as f:
 				f.write(self.json)
 		
-		self.data=json.loads(self.json)
+		self.data = json.loads(self.json)
+		dt=datetime.strptime(self.data["datetime"], "%Y-%m-%d %H:%M:%S.%f")
+		
+		if datetime.now()>dt+timedelta(minutes=int(control.setting("delay"))):
+			self.downloadJson()
+			with open(control.jsonFile, "w") as f:
+				f.write(self.json)
+		
+		self.data = json.loads(self.json)
+			
 		
 		
 	def getStreamerFilter(self):

@@ -20,18 +20,23 @@ class main():
 		self.streamerFilter = []
 		self.getStreamerFilter()
 		self.json=""
+		self.getJson()
+	
+	def getJson(self):
 		if os.path.isfile(control.jsonFile):
-			dt=datetime.fromtimestamp(os.path.getmtime(control.jsonFile))
-			if datetime.now()<dt+timedelta(minutes=int(control.setting("delay"))):
-				with open(control.jsonFile, "r") as f:
+			with open(control.jsonFile, "r") as f:
 					self.json=f.read()
-					
-		if self.json=="":
+			self.data = json.loads(self.json)
+			log(self.data["datetime"])
+			dt=datetime.strptime(self.data["datetime"], "%Y-%m-%d %H:%M:%S.%f")
+		
+		if self.json=="" or datetime.now()<dt+timedelta(minutes=int(control.setting("delay"))):
 			self.downloadJson()
 			with open(control.jsonFile, "w") as f:
 				f.write(self.json)
-				
-		self.data = json.loads(self.json)
+		
+		self.data=json.loads(self.json)
+		
 		
 	def getStreamerFilter(self):
 		lst=["streamer_acestream", "streamer_sopcast", "streamer_youtube", "streamer_aliez", "streamer_web"]

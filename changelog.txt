@@ -3,6 +3,9 @@ Castback addon by [COLOR yellow]@rootsradics and @moacmoa[/COLOR]
 ====================================================================
 
 
+v0.0.4 [18-Oct-2017]
+- Modification de la référence temporelle pour download json
+
 v0.0.3 [14-Oct-2017]
 - Isolating livetv.sx (no more service yet)
 - Settings from scratch :

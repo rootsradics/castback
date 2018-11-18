@@ -1,9 +1,10 @@
-from resources.lib.modules import client,webutils,control
+from resources.lib.modules import control
 import re,sys,os
 from resources.lib.modules.log_utils import log
 import json
 import urllib
 from datetime import datetime, timedelta
+import time
 
 class info():
 	def __init__(self):
@@ -32,7 +33,16 @@ class main():
 				f.write(self.json)
 		
 		self.data = json.loads(self.json)
-		dt=datetime.strptime(self.data["datetime"], "%Y-%m-%d %H:%M:%S.%f")
+		
+		#Commande "normale" mais ca bug sur mon autre RPI
+		#dt=datetime(*(time.strptime(self.data["datetime"], "%Y-%m-%d %H:%M:%S.%f")))
+		
+		# Du coup, je fais ca :
+		j, h=self.data["datetime"].split()
+		y, mo, d=j.split("-")
+		h, m, s=h.split(":")
+		s=s.split(".")[0]
+		dt=datetime(int(y), int(mo), int(d), int(h), int(m), int(s))
 		
 		if datetime.now()>dt+timedelta(minutes=int(control.setting("delay"))):
 			self.downloadJson()

@@ -3,7 +3,7 @@ from resources.lib.modules.addon import Addon
 import sys,os
 import urlparse,urllib
 import xbmc, xbmcgui, xbmcplugin, xbmcaddon
-from resources.lib.modules import control,myLists,client
+from resources.lib.modules import control
 from resources.lib.modules.log_utils import log
 import re
 

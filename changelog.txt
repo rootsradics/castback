@@ -2,6 +2,9 @@
 Castback addon by [COLOR yellow]@rootsradics and @moacmoa[/COLOR]
 ====================================================================
 
+v0.0.6 [18-Nov-2018]
+- Suppression d'import de modules inutiles
+- Bugfix dans la gestion d'une date
 
 v0.0.4 [18-Oct-2017]
 - Modification de la référence temporelle pour download json
